@@ -21,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -105,6 +106,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         user.setRoles(roles);
+        user.setCreatedDate(LocalDateTime.now());
 
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
