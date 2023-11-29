@@ -45,9 +45,10 @@ UNIQUE (`product_code`)
 );
 
 CREATE TABLE IF NOT EXISTS `order` (
+`id` bigint NOT NULL AUTO_INCREMENT
  `order_id` varchar(255) NOT NULL,
  `quantity` int NOT NULL,
-  `date` datetime DEFAULT NULL,
+  `order_date` datetime DEFAULT NULL,
   `user_id` bigint NOT NULL,
   `product_id` bigint NOT NULL,
  FOREIGN KEY(user_id) REFERENCES users(id),
