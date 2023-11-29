@@ -1,10 +1,10 @@
-CREATE TABLE `roles` (
+CREATE TABLE IF NOT EXISTS `roles` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `user_roles` (
+CREATE TABLE IF NOT EXISTS `user_roles` (
   `user_id` bigint NOT NULL,
   `role_id` int NOT NULL,
   PRIMARY KEY (`user_id`,`role_id`),
@@ -23,13 +23,13 @@ CREATE TABLE `user_roles` (
 
 
 
-CREATE TABLE `category`(
+CREATE TABLE IF NOT EXISTS `category`(
  `id` bigint NOT NULL AUTO_INCREMENT,
  `name` varchar(255) NOT NULL,
  PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `products`(
+CREATE TABLE IF NOT EXISTS `products`(
 `id` bigint NOT NULL AUTO_INCREMENT,
 `product_code` varchar(255) NOT NULL,
 `name` varchar(255) NOT NULL,
@@ -44,7 +44,7 @@ FOREIGN KEY(category_id) REFERENCES category(id),
 UNIQUE (`product_code`)
 );
 
-CREATE TABLE `order` (
+CREATE TABLE IF NOT EXISTS `order` (
  `order_id` varchar(255) NOT NULL,
  `quantity` int NOT NULL,
   `date` datetime DEFAULT NULL,
