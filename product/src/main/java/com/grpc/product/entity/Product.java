@@ -1,6 +1,8 @@
 package com.grpc.product.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,9 +11,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,13 +37,23 @@ public class Product {
     @Column(name = "created_date")
     private LocalDateTime created_date;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "created_by")
     private User user;
+
+    public Product(String name, String productCode, double price, int quantity,Category category, User user ) {
+        this.name = name;
+        this.productCode = productCode;
+        this.price = price;
+        this.quantity = quantity;
+        this.category = category;
+        this.user = user;
+        this.created_date = LocalDateTime.now();
+    }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
     private List<Order> orderList;

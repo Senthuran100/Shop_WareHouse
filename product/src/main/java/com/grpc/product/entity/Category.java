@@ -1,6 +1,7 @@
 package com.grpc.product.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -10,16 +11,27 @@ import java.util.List;
 @Table(name = "category")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Category {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> productList;
+
+    public Category(String name) {
+        this.name = name;
+    }
+
+    public Category(Long id) {
+        this.id = id;
+    }
 
 }

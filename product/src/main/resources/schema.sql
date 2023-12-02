@@ -44,13 +44,15 @@ FOREIGN KEY(category_id) REFERENCES category(id),
 UNIQUE (`product_code`)
 );
 
-CREATE TABLE IF NOT EXISTS `order` (
-`id` bigint NOT NULL AUTO_INCREMENT
+CREATE TABLE IF NOT EXISTS `orders` (
+`id` bigint NOT NULL AUTO_INCREMENT,
  `order_id` varchar(255) NOT NULL,
  `quantity` int NOT NULL,
   `order_date` datetime DEFAULT NULL,
   `user_id` bigint NOT NULL,
   `product_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
  FOREIGN KEY(user_id) REFERENCES users(id),
- FOREIGN KEY(product_id) REFERENCES products(id)
+ FOREIGN KEY(product_id) REFERENCES products(id),
+ UNIQUE (`order_id`)
 );
