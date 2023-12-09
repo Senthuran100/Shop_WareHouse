@@ -1,11 +1,7 @@
 package com.grpc.product;
 
-import com.grpc.product.entity.Category;
-import com.grpc.product.entity.Product;
-import com.grpc.product.entity.User;
-import com.grpc.product.repository.CategoryRepository;
-import com.grpc.product.repository.ProductRepository;
-import com.grpc.product.repository.UserRepository;
+import com.grpc.product.entity.*;
+import com.grpc.product.repository.*;
 import com.grpc.product.service.CategoryService;
 import com.grpc.product.service.UserService;
 import org.springframework.boot.ApplicationArguments;
@@ -14,9 +10,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @SpringBootApplication
 public class ProductApplication {
@@ -26,21 +24,35 @@ public class ProductApplication {
 	}
 
 	@Bean
-	public ApplicationRunner run(CategoryService categoryService, UserService userService, ProductRepository productRepository) throws Exception {
+	public ApplicationRunner run(CategoryService categoryService, UserService userService, ProductRepository productRepository,
+								 UserRepository userRepository, CategoryRepository categoryRepository,OrderRepository orderRepository, OrderProductRepository orderProductRepository) throws Exception {
 		return (ApplicationArguments args) -> {
 //			List<Category> categoryList = Arrays.asList(new Category("cosmetics"), new Category("food"));
 //			List<User> userList = Arrays.asList(new User("abc","abc@gmail.com","1234"));
 //			userRepository.saveAll(userList);
 //			categoryRepository.saveAll(categoryList);
 
-			int intId = 15;
+			int intId = 1;
 
 			Category category = categoryService.findById((long)intId);
 			User user = userService.findById((long) intId);
 
-			Product product = new Product("biscuit1","P-12345",25,5,category,user);
+//			Product product = new Product("biscuit1","P-12345",25,5,category,user);
+//			productRepository.save(product);
 
-			productRepository.save(product);
+			String uuidAsString = UUID.randomUUID().toString();
+
+			Optional<Product> product = productRepository.findById((long) intId);
+
+			Order order = new Order(uuidAsString, LocalDateTime.now(),user);
+
+
+//			orderRepository.save(order);
+
+			Optional<Order> order1 = orderRepository.findById((long) intId);
+			OrderProduct orderProduct = new OrderProduct(5,order1.get(),product.get());
+			orderProductRepository.save(orderProduct);
+
 		};
 
 	}

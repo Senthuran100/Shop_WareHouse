@@ -20,7 +20,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "product_code",unique = true)
     private String productCode;
@@ -31,8 +31,8 @@ public class Product {
     @Column(name = "price")
     private double price;
 
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "stock")
+    private int stock;
 
     @Column(name = "created_date")
     private LocalDateTime created_date;
@@ -45,18 +45,18 @@ public class Product {
     @JoinColumn(name = "created_by")
     private User user;
 
-    public Product(String name, String productCode, double price, int quantity,Category category, User user ) {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
+    private List<OrderProduct> orderProductList;
+
+    public Product(String name, String productCode, double price, int stock,Category category, User user ) {
         this.name = name;
         this.productCode = productCode;
         this.price = price;
-        this.quantity = quantity;
+        this.stock = stock;
         this.category = category;
         this.user = user;
         this.created_date = LocalDateTime.now();
     }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Order> orderList;
 
     @Override
     public boolean equals(Object o) {
