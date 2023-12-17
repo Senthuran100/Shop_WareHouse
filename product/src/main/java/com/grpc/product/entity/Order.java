@@ -39,4 +39,12 @@ public class Order {
         this.created_date = created_date;
         this.user = user;
     }
+
+    public Order(String orderId, LocalDateTime created_date, User user,List<OrderProduct> orderProductList) {
+        this.orderId = orderId;
+        this.created_date = created_date;
+        this.user = user;
+        this.orderProductList = orderProductList;
+    }
+
 }

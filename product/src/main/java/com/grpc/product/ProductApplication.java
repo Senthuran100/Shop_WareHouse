@@ -2,8 +2,8 @@ package com.grpc.product;
 
 import com.grpc.product.entity.*;
 import com.grpc.product.repository.*;
-import com.grpc.product.service.CategoryService;
-import com.grpc.product.service.UserService;
+import com.grpc.product.service.impl.CategoryServiceImpl;
+import com.grpc.product.service.impl.UserServiceImpl;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,8 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,8 +22,8 @@ public class ProductApplication {
 	}
 
 	@Bean
-	public ApplicationRunner run(CategoryService categoryService, UserService userService, ProductRepository productRepository,
-								 UserRepository userRepository, CategoryRepository categoryRepository,OrderRepository orderRepository, OrderProductRepository orderProductRepository) throws Exception {
+	public ApplicationRunner run(CategoryServiceImpl categoryService, UserServiceImpl userService, ProductRepository productRepository,
+								 UserRepository userRepository, CategoryRepository categoryRepository, OrderRepository orderRepository, OrderProductRepository orderProductRepository) throws Exception {
 		return (ApplicationArguments args) -> {
 //			List<Category> categoryList = Arrays.asList(new Category("cosmetics"), new Category("food"));
 //			List<User> userList = Arrays.asList(new User("abc","abc@gmail.com","1234"));

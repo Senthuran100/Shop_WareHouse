@@ -33,4 +33,9 @@ public class OrderProduct {
         this.order = order;
         this.product = product;
     }
+
+    public OrderProduct(int quantity,  Product product) {
+        this.quantity = quantity;
+        this.product = product;
+    }
 }
