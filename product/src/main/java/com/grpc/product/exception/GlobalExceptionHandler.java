@@ -22,4 +22,10 @@ public class GlobalExceptionHandler {
                 .body(exception.getMessage());
     }
 
+    public ResponseEntity<Object> handleRequestNotValidException(RequestNotValidException exception) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(exception.getMessage());
+    }
+
 }

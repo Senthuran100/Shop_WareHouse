@@ -4,6 +4,7 @@ import com.grpc.product.entity.Order;
 import com.grpc.product.entity.OrderProduct;
 import com.grpc.product.entity.Product;
 import com.grpc.product.entity.User;
+import com.grpc.product.exception.RequestNotValidException;
 import com.grpc.product.payload.request.OrderProductRequest;
 import com.grpc.product.payload.request.OrderRequest;
 import com.grpc.product.payload.response.OrderProductResponse;
@@ -16,9 +17,11 @@ import com.grpc.product.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -38,6 +41,18 @@ public class OrderServiceImpl implements OrderService {
                 .map(OrderProductRequest::getProductId).toList();
         List<Product> productList = productRepository.findByProductIdIn(productIds);
 
+        // Validate whether the stock is greater than the quantity of the order request.
+        productList.forEach(x-> {
+           OrderProductRequest orderProductRequest = orderRequest.getOrderProductList().stream()
+                    .filter(y->y.getProductId()==x.getId()).findFirst().orElseThrow(() -> new EntityNotFoundException("Product not found with id " + x.getId()));
+
+            if(x.getStock() > orderProductRequest.getQuantity()) {
+                x.setStock(x.getStock()-orderProductRequest.getQuantity());
+            } else {
+                throw new RequestNotValidException("Order Request Quantity exceeded the product Stock level");
+            }
+        });
+
         Map<Long, Product> productMap = productList.stream()
                 .collect(Collectors.toMap(Product::getId,product -> product));
 
@@ -52,6 +67,8 @@ public class OrderServiceImpl implements OrderService {
                 .toList();
 
         List<OrderProduct> savedOrderProducts = orderProductRepository.saveAll(orderProductList);
+
+        productRepository.saveAll(productList);
 
         return OrderResponse.builder()
                 .orderId(savedOrder.getOrderId())
