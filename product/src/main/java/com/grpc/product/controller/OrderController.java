@@ -1,5 +1,6 @@
 package com.grpc.product.controller;
 
+import com.grpc.product.exception.RequestNotValidException;
 import com.grpc.product.payload.request.OrderRequest;
 import com.grpc.product.payload.response.OrderResponse;
 import com.grpc.product.service.OrderService;
@@ -20,6 +21,9 @@ public class OrderController {
 
     @PostMapping("/order")
     public ResponseEntity<OrderResponse> saveOrder(@Validated @RequestBody OrderRequest orderRequest) {
+        if(orderRequest.getOrderProductList().isEmpty() || orderRequest.getUserId() == 0)  {
+            throw new RequestNotValidException("Order creation request is invalid");
+        }
         ResponseEntity<OrderResponse> orderResponseResponseEntity = new ResponseEntity<>(orderService.saveOrder(orderRequest), HttpStatus.CREATED);
         return orderResponseResponseEntity;
     }
