@@ -9,3 +9,12 @@ Sample Category Creation Request
 --data '{
 "name":"sample-category"
 }'`
+
+Sample Order Creation Request
+
+`curl --location 'http://localhost:8080/v1/api/order' \
+--header 'Content-Type: application/json' \
+--data '{
+"userId":1,
+"orderProductList":[{"quantity":3,"productId":1}]
+}'`

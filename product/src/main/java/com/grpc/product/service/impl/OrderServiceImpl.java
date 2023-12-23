@@ -8,7 +8,7 @@ import com.grpc.product.payload.request.OrderProductRequest;
 import com.grpc.product.payload.request.OrderRequest;
 import com.grpc.product.payload.response.OrderProductResponse;
 import com.grpc.product.payload.response.OrderResponse;
-import com.grpc.product.payload.response.ProductResponse;
+import com.grpc.product.repository.OrderProductRepository;
 import com.grpc.product.repository.OrderRepository;
 import com.grpc.product.repository.ProductRepository;
 import com.grpc.product.service.OrderService;
@@ -29,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     private UserService userService;
     private ProductRepository productRepository;
     private OrderRepository orderRepository;
+    private OrderProductRepository orderProductRepository;
 
     public OrderResponse saveOrder(OrderRequest orderRequest) {
         User user = userService.findById(orderRequest.getUserId());
@@ -40,27 +41,29 @@ public class OrderServiceImpl implements OrderService {
         Map<Long, Product> productMap = productList.stream()
                 .collect(Collectors.toMap(Product::getId,product -> product));
 
-        List<OrderProduct> orderProductList = orderRequest.getOrderProductList().stream()
-                .map(x->new OrderProduct(x.getQuantity(),productMap.get(x.getProductId())))
-                .toList();
-
         String orderId = UUID.randomUUID().toString();
 
-        Order order = new Order(orderId, LocalDateTime.now(),user,orderProductList);
+        Order order = new Order(orderId, LocalDateTime.now(),user);
 
         Order savedOrder = orderRepository.save(order);
+
+        List<OrderProduct> orderProductList = orderRequest.getOrderProductList().stream()
+                .map(x->new OrderProduct(x.getQuantity(),savedOrder,productMap.get(x.getProductId())))
+                .toList();
+
+        List<OrderProduct> savedOrderProducts = orderProductRepository.saveAll(orderProductList);
 
         return OrderResponse.builder()
                 .orderId(savedOrder.getOrderId())
                 .id(savedOrder.getId())
                 .created_date(savedOrder.getCreated_date())
-                .orderProductList(savedOrder.getOrderProductList().stream()
-                        .map(x-> OrderProductResponse.builder()
-                                .id(x.getId())
-                                .quantity(x.getQuantity())
-                                .product(x.getProduct())
-                                .build())
-                        .toList())
+                .userId(user.getId())
+                .orderProductList(savedOrderProducts.stream().map(x-> OrderProductResponse.builder()
+                        .quantity(x.getQuantity())
+                        .productId(x.getProduct().getId())
+                        .id(x.getId())
+                        .build()
+                ).toList())
                 .build();
     };
 }
