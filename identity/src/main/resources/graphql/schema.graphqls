@@ -1,0 +1,21 @@
+schema {
+    mutation: Mutation
+}
+
+type Mutation {
+    createCategory(name:String!):Category!
+    createProduct(name:String!,price:Float!,stock:Int!,categoryId:Int!,userId:Int!):Product!
+}
+
+type Category {
+    id:ID!,
+    name:String!
+}
+
+type Product {
+    id:ID!,
+    name:String!,
+    stock:Int!,
+    category:Category!,
+    price:Float!
+}

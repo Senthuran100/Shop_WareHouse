@@ -21,7 +21,6 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -52,6 +51,12 @@ public class OrderServiceImpl implements OrderService {
                 throw new RequestNotValidException("Order Request Quantity exceeded the product Stock level");
             }
         });
+
+        /*
+        TODO consider the case if the orderRequest consist of many products with same id.
+          Need to aggregate the request and consider as same product by adding the quantity.
+         */
+
 
         Map<Long, Product> productMap = productList.stream()
                 .collect(Collectors.toMap(Product::getId,product -> product));
