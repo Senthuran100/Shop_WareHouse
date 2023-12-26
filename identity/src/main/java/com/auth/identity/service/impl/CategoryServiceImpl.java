@@ -1,5 +1,6 @@
 package com.auth.identity.service.impl;
 
+import com.auth.identity.payload.request.CategoryRequest;
 import com.auth.identity.payload.response.CategoryResponse;
 import com.auth.identity.service.RestClient;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,10 @@ public class CategoryServiceImpl  {
 
     @Transactional
     public ResponseEntity<CategoryResponse> invokeCreateCategory(String name) {
-       ResponseEntity<CategoryResponse> categoryResponse = restClient.postService(name, "category", CategoryResponse.class);
+       CategoryRequest categoryRequest = CategoryRequest.builder()
+               .name(name)
+               .build();
+       ResponseEntity<CategoryResponse> categoryResponse = restClient.postService(categoryRequest, "category", CategoryResponse.class);
        return categoryResponse;
     }
 }
