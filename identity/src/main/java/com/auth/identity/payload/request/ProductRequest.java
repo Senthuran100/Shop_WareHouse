@@ -1,9 +1,6 @@
-package com.grpc.product.payload.request;
+package com.auth.identity.payload.request;
 
 import lombok.*;
-
-import javax.validation.constraints.NotBlank;
-
 
 @Getter
 @Setter

@@ -11,7 +11,9 @@ import java.util.Collections;
 
 @Service
 public class RestClient<T,U> {
+    // TODO: Move the below variable to the application.properties
     final static  String URL = "http://localhost:8082/v1/api/";
+
     public ResponseEntity<U> postService(T t, String urlPath, Class<U> clazz) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

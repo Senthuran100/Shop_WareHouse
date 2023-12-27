@@ -2,6 +2,7 @@ package com.auth.identity.service.impl;
 
 import com.auth.identity.payload.request.CategoryRequest;
 import com.auth.identity.payload.response.CategoryResponse;
+import com.auth.identity.service.CategoryService;
 import com.auth.identity.service.RestClient;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import javax.transaction.Transactional;
 
 @Service
 @AllArgsConstructor
-public class CategoryServiceImpl  {
+public class CategoryServiceImpl  implements CategoryService {
     private final RestClient restClient;
 
     @Transactional
