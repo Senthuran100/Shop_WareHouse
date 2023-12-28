@@ -36,16 +36,16 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse saveOrder(OrderRequest orderRequest) {
         User user = userService.findById(orderRequest.getUserId());
 
-        List<Long> productIds = orderRequest.getOrderProductList().stream()
+        List<Long> productIds = orderRequest.getOrderProducts().stream()
                 .map(OrderProductRequest::getProductId).toList();
         List<Product> productList = productRepository.findByProductIdIn(productIds);
 
         // Validate whether the stock is greater than the quantity of the order request.
         productList.forEach(x-> {
-           OrderProductRequest orderProductRequest = orderRequest.getOrderProductList().stream()
+           OrderProductRequest orderProductRequest = orderRequest.getOrderProducts().stream()
                     .filter(y->y.getProductId()==x.getId()).findFirst().orElseThrow(() -> new EntityNotFoundException("Product not found with id " + x.getId()));
 
-            if(x.getStock() > orderProductRequest.getQuantity()) {
+            if(x.getStock() >= orderProductRequest.getQuantity()) {
                 x.setStock(x.getStock()-orderProductRequest.getQuantity());
             } else {
                 throw new RequestNotValidException("Order Request Quantity exceeded the product Stock level");
@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        List<OrderProduct> orderProductList = orderRequest.getOrderProductList().stream()
+        List<OrderProduct> orderProductList = orderRequest.getOrderProducts().stream()
                 .map(x->new OrderProduct(x.getQuantity(),savedOrder,productMap.get(x.getProductId())))
                 .toList();
 

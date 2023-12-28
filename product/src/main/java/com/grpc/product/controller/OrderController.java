@@ -21,7 +21,7 @@ public class OrderController {
 
     @PostMapping("/order")
     public ResponseEntity<OrderResponse> saveOrder(@Validated @RequestBody OrderRequest orderRequest) {
-        if(orderRequest.getOrderProductList().isEmpty() || orderRequest.getUserId() == 0)  {
+        if(orderRequest.getOrderProducts().isEmpty() || orderRequest.getUserId() == 0)  {
             throw new RequestNotValidException("Order creation request is invalid");
         }
         ResponseEntity<OrderResponse> orderResponseResponseEntity = new ResponseEntity<>(orderService.saveOrder(orderRequest), HttpStatus.CREATED);

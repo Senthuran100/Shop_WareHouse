@@ -22,6 +22,10 @@ public class CustomGraphQLExceptionHandler extends DataFetcherExceptionResolverA
                 errorType = ErrorType.DataFetchingException;
                 return graphQLError(errorType, (CustomGraphQLException) ex, env);
             }
+            if(((CustomGraphQLException) ex).getStatusCode()==500){
+                errorType = ErrorType.ExecutionAborted;
+                return graphQLError(errorType, (CustomGraphQLException) ex, env);
+            }
             else {
                 return GraphqlErrorBuilder.newError().build();
             }

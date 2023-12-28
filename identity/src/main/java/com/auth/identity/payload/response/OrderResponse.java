@@ -1,7 +1,5 @@
-package com.grpc.product.payload.response;
+package com.auth.identity.payload.response;
 
-import com.grpc.product.entity.OrderProduct;
-import com.grpc.product.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;

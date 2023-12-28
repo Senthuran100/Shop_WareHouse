@@ -1,7 +1,8 @@
 
 type Mutation {
     createCategory(name:String!):Category!
-    createProduct(name:String!,price:Float!,stock:Int!,categoryId:Int!,userId:Int!):Product!
+    createProduct(name:String!, price:Float!, stock:Int!, categoryId:Int!, userId:Int!):Product!
+    createOrder(orderReq:OrderInput):Order!
 }
 
 type Category {
@@ -19,4 +20,28 @@ type Product {
     stock:Int!,
     category:Category!,
     price:Float!
+}
+
+input OrderInput {
+    userId:ID!,
+    orderProducts:[OrderProductInput]!
+}
+
+input OrderProductInput {
+    quantity:Int!,
+    productId:ID!
+}
+
+type Order {
+    id:ID!,
+    orderId:String!,
+    created_date:String!,
+    userId:ID!,
+    orderProductList:[OrderProduct]!
+}
+
+type OrderProduct {
+    id:ID!,
+    quantity:Int!,
+    productId:ID!
 }

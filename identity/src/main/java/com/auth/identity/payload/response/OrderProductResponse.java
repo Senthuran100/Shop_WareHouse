@@ -1,13 +1,12 @@
-package com.grpc.product.payload.response;
+package com.auth.identity.payload.response;
 
-import com.grpc.product.entity.Product;
 import lombok.*;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class OrderProductResponse {
     private Long id;
     private int quantity;
