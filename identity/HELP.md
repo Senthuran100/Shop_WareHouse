@@ -47,3 +47,15 @@ Variables
 "orderProducts": [{"quantity": 1,"productId": 1},{"quantity": 3,"productId": 2}]
 }
 }`
+
+## Flow of the Application
+
+* Create a user using the /signup endpoint.
+  ![Signup Image](images/signup.png)
+
+* Get the token using /signin endpoint.
+  ![Signin Image](images/signin.png)
+
+* Invoke the /graphql endpoint using suitable mutation to create category. Need to pass the token in Authorization header.
+  ![Create Category Image](images/Createcategory.png)
+
