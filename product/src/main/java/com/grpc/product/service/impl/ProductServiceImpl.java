@@ -12,6 +12,7 @@ import com.grpc.product.repository.CategoryRepository;
 import com.grpc.product.repository.ProductRepository;
 import com.grpc.product.service.ProductService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @Service
 @Transactional
 @AllArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
@@ -40,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductResponse saveProduct(ProductRequest productRequest) {
+        log.info("Creation of Product with name: "+ productRequest.getName());
         String productCode = UUID.randomUUID().toString();
         try {
             Category category = categoryRepository.findById(productRequest.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category is not found with id : " + productRequest.getCategoryId()));
@@ -65,6 +68,7 @@ public class ProductServiceImpl implements ProductService {
                     .stock(savedProduct.getStock())
                     .build();
         } catch (Exception exception) {
+            log.info("Product Creation encountered exception");
             throw new RuntimeException(exception);
         }
 

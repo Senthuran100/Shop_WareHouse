@@ -15,6 +15,7 @@ import com.grpc.product.repository.ProductRepository;
 import com.grpc.product.service.OrderService;
 import com.grpc.product.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private UserService userService;
@@ -34,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderProductRepository orderProductRepository;
 
     public OrderResponse saveOrder(OrderRequest orderRequest) {
+        log.info("Order Creation with userId: "+orderRequest.getUserId());
         User user = userService.findById(orderRequest.getUserId());
 
         List<Long> productIds = orderRequest.getOrderProducts().stream()

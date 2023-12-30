@@ -18,3 +18,28 @@ Sample Order Creation Request
 "userId":1,
 "orderProductList":[{"quantity":3,"productId":1}]
 }'`
+
+### Sample SQL Queries.
+
+**Get the orders and users who bought the product biscuit1**
+
+_select * from orders o <br/>
+LEFT JOIN order_product op on o.id = op.order_id <br/>
+LEFT JOIN products p on p.id = op.product_id <br/>
+LEFT JOIN users u on u.id = o.user_id <br/>
+where p.name LIKE 'biscuit1' <br/>_
+
+**Find out the order ids which are related to the product biscuit1**
+
+_select DISTINCT o.id  from orders o <br/>
+LEFT JOIN order_product op on o.id = op.order_id <br/>
+LEFT JOIN products p on p.id = op.product_id <br/>
+LEFT JOIN users u on u.id = o.user_id <br/>
+where p.name LIKE 'biscuit1' <br/>_
+
+**Find out the roles associated with a user.**
+
+_select r.name  from users u <br/>
+LEFT JOIN user_roles ur ON ur.user_id = u.id <br/>
+LEFT JOIN roles r ON  r.id = ur.role_id <br/>
+WHERE u.email = 'abc123@gmail.com' <br/>_
