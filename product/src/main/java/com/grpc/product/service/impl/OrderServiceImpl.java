@@ -39,6 +39,11 @@ public class OrderServiceImpl implements OrderService {
         log.info("Order Creation with userId: "+orderRequest.getUserId());
         User user = userService.findById(orderRequest.getUserId());
 
+        Map<Long, Integer> orderProductRequestMap = orderRequest.getOrderProducts().stream().collect(Collectors.groupingBy(OrderProductRequest::getProductId,
+                Collectors.summingInt(OrderProductRequest::getQuantity)));
+        List<OrderProductRequest> orderProductRequests = orderProductRequestMap.entrySet().stream().map(e->new OrderProductRequest(e.getKey(),e.getValue())).toList();
+        orderRequest.setOrderProducts(orderProductRequests);
+
         List<Long> productIds = orderRequest.getOrderProducts().stream()
                 .map(OrderProductRequest::getProductId).toList();
         List<Product> productList = productRepository.findByProductIdIn(productIds);
@@ -54,12 +59,6 @@ public class OrderServiceImpl implements OrderService {
                 throw new RequestNotValidException("Order Request Quantity exceeded the product Stock level");
             }
         });
-
-        /*
-        TODO consider the case if the orderRequest consist of many products with same id.
-          Need to aggregate the request and consider as same product by adding the quantity.
-         */
-
 
         Map<Long, Product> productMap = productList.stream()
                 .collect(Collectors.toMap(Product::getId,product -> product));

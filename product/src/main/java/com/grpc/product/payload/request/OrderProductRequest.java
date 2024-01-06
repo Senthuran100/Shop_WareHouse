@@ -11,7 +11,8 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class OrderProductRequest {
     @NotBlank
-    private int quantity;
-    @NotBlank
     private long productId;
+    @NotBlank
+    private int quantity;
+
 }
