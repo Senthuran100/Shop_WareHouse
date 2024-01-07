@@ -12,11 +12,11 @@ Sample Category Creation Request
 
 Sample Order Creation Request
 
-`curl --location 'http://localhost:8080/v1/api/order' \
+`curl --location 'http://localhost:8082/v1/api/order' \
 --header 'Content-Type: application/json' \
 --data '{
 "userId":1,
-"orderProductList":[{"quantity":3,"productId":1}]
+"orderProducts":[{"quantity":1,"productId":1},{"quantity":1,"productId":1},{"quantity":1,"productId":2}]
 }'`
 
 ### Sample SQL Queries.
