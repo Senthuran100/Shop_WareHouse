@@ -48,17 +48,8 @@ public class OrderServiceImpl implements OrderService {
                 .map(OrderProductRequest::getProductId).toList();
         List<Product> productList = productRepository.findByProductIdIn(productIds);
 
-        // Validate whether the stock is greater than the quantity of the order request.
-        productList.forEach(x-> {
-           OrderProductRequest orderProductRequest = orderRequest.getOrderProducts().stream()
-                    .filter(y->y.getProductId()==x.getId()).findFirst().orElseThrow(() -> new EntityNotFoundException("Product not found with id " + x.getId()));
-
-            if(x.getStock() >= orderProductRequest.getQuantity()) {
-                x.setStock(x.getStock()-orderProductRequest.getQuantity());
-            } else {
-                throw new RequestNotValidException("Order Request Quantity exceeded the product Stock level");
-            }
-        });
+        // validate whether the stock is greater than the quantity of the order request.
+        validateStockGreaterThanProduct(productList, orderRequest);
 
         Map<Long, Product> productMap = productList.stream()
                 .collect(Collectors.toMap(Product::getId,product -> product));
@@ -90,4 +81,20 @@ public class OrderServiceImpl implements OrderService {
                 ).toList())
                 .build();
     };
+
+    /**
+     * Validate whether the stock is greater than the quantity of the order request.
+     */
+    private void validateStockGreaterThanProduct(List<Product> productList, OrderRequest orderRequest) {
+        productList.forEach(x-> {
+            OrderProductRequest orderProductRequest = orderRequest.getOrderProducts().stream()
+                    .filter(y->y.getProductId()==x.getId()).findFirst().orElseThrow(() -> new EntityNotFoundException("Product not found with id " + x.getId()));
+
+            if(x.getStock() >= orderProductRequest.getQuantity()) {
+                x.setStock(x.getStock()-orderProductRequest.getQuantity());
+            } else {
+                throw new RequestNotValidException("Order Request Quantity exceeded the product Stock level");
+            }
+        });
+    }
 }
