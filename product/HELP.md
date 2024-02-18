@@ -43,3 +43,15 @@ _select r.name  from users u <br/>
 LEFT JOIN user_roles ur ON ur.user_id = u.id <br/>
 LEFT JOIN roles r ON  r.id = ur.role_id <br/>
 WHERE u.email = 'abc123@gmail.com' <br/>_
+
+**ElasticSearch Installation using Docker command**
+
+`docker run -p 9200:9200 \
+-e "discovery.type=single-node" \
+-e "xpack.security.enabled=false" \
+docker.elastic.co/elasticsearch/elasticsearch:8.8.1`
+
+
+**View the Elastic Search Data.**
+
+`http://127.0.0.1:9200/orderindex/_search?pretty`

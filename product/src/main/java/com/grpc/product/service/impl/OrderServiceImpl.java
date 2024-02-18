@@ -12,6 +12,7 @@ import com.grpc.product.payload.response.OrderResponse;
 import com.grpc.product.repository.OrderProductRepository;
 import com.grpc.product.repository.OrderRepository;
 import com.grpc.product.repository.ProductRepository;
+import com.grpc.product.service.ElasticSearchService;
 import com.grpc.product.service.OrderService;
 import com.grpc.product.service.UserService;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
     private ProductRepository productRepository;
     private OrderRepository orderRepository;
     private OrderProductRepository orderProductRepository;
+    private ElasticSearchService elasticSearchService;
 
     public OrderResponse saveOrder(OrderRequest orderRequest) {
         log.info("Order Creation with userId: "+orderRequest.getUserId());
@@ -65,8 +67,10 @@ public class OrderServiceImpl implements OrderService {
                 .toList();
 
         List<OrderProduct> savedOrderProducts = orderProductRepository.saveAll(orderProductList);
-
+        // Finally Saving the product List after deducting the quantity from stock.
         productRepository.saveAll(productList);
+
+        elasticSearchService.saveOrder(savedOrder);
 
         return OrderResponse.builder()
                 .orderId(savedOrder.getOrderId())
