@@ -1,5 +1,6 @@
-package com.auth.identity.security.jwt;
+package com.auth.identity.filter;
 
+import com.auth.identity.security.jwt.JwtUtils;
 import com.auth.identity.security.services.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

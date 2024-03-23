@@ -30,26 +30,26 @@ public class ProductApplication {
 //			userRepository.saveAll(userList);
 //			categoryRepository.saveAll(categoryList);
 
-			int intId = 1;
-
-			Category category = categoryService.findById((long)intId);
-			User user = userService.findById((long) intId);
+//			int intId = 1;
+//
+//			Category category = categoryService.findById((long)intId);
+//			User user = userService.findById((long) intId);
 
 //			Product product = new Product("biscuit1","P-12345",25,5,category,user);
 //			productRepository.save(product);
 
-			String uuidAsString = UUID.randomUUID().toString();
-
-			Optional<Product> product = productRepository.findById((long) intId);
-
-			Order order = new Order(uuidAsString, LocalDateTime.now(),user);
+//			String uuidAsString = UUID.randomUUID().toString();
+//
+//			Optional<Product> product = productRepository.findById((long) intId);
+//
+//			Order order = new Order(uuidAsString, LocalDateTime.now(),user);
 
 
 //			orderRepository.save(order);
 
-			Optional<Order> order1 = orderRepository.findById((long) intId);
-			OrderProduct orderProduct = new OrderProduct(5,order1.get(),product.get());
-			orderProductRepository.save(orderProduct);
+//			Optional<Order> order1 = orderRepository.findById((long) intId);
+//			OrderProduct orderProduct = new OrderProduct(5,order1.get(),product.get());
+//			orderProductRepository.save(orderProduct);
 
 		};
 

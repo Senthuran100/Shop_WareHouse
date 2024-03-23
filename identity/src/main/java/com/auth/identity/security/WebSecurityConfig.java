@@ -1,7 +1,8 @@
 package com.auth.identity.security;
 
+import com.auth.identity.filter.CorrelationIdFilter;
 import com.auth.identity.security.jwt.AuthEntryPointJwt;
-import com.auth.identity.security.jwt.AuthTokenFilter;
+import com.auth.identity.filter.AuthTokenFilter;
 import com.auth.identity.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthTokenFilter authenticationJwtTokenFilter;
 
+    @Autowired
+    private CorrelationIdFilter correlationIdFilter;
+
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -55,7 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**","/graphiql").permitAll()
                 .anyRequest().authenticated();
+
         http.addFilterBefore(authenticationJwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(correlationIdFilter,AuthTokenFilter.class);
         http.cors();
 
     }

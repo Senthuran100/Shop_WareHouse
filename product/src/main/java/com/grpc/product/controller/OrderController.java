@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderController {
     private OrderService orderService;
-    private ElasticSearchService elasticSearchService;
+//    private ElasticSearchService elasticSearchService;
 
     @PostMapping("/order")
     public ResponseEntity<OrderResponse> saveOrder(@Validated @RequestBody OrderRequest orderRequest) {
@@ -30,9 +30,9 @@ public class OrderController {
         return orderResponseResponseEntity;
     }
 
-    @GetMapping("/orders")
-    public ResponseEntity<List<OrderDetail>> retrieveAllOrders() {
-        ResponseEntity<List<OrderDetail>> orderResponseResponseEntity = new ResponseEntity<>(elasticSearchService.getAll(), HttpStatus.OK);
-        return orderResponseResponseEntity;
-    }
+//    @GetMapping("/orders")
+//    public ResponseEntity<List<OrderDetail>> retrieveAllOrders() {
+//        ResponseEntity<List<OrderDetail>> orderResponseResponseEntity = new ResponseEntity<>(elasticSearchService.getAll(), HttpStatus.OK);
+//        return orderResponseResponseEntity;
+//    }
 }
